@@ -4,7 +4,7 @@ class Usuario implements ActiveRecord{
 
     private int $idUsuario;
     
-    public function __construct(private string $email,private string $senha){
+    public function __construct(private string $nome, private string $email,private string $senha){
     }
 
     public function setIdUsuario(int $idUsuario):void{
@@ -31,13 +31,21 @@ class Usuario implements ActiveRecord{
         return $this->email;
     }
 
+    public function setNome(string $nome):void{
+        $this->nome = $nome;
+    }
+
+    public function getNome():string{
+        return $this->nome;
+    }
+
     public function save():bool{
         $conexao = new MySQL();
         $this->senha = password_hash($this->senha,PASSWORD_BCRYPT); 
         if(isset($this->idUsuario)){
-            $sql = "UPDATE usuarios SET email = '{$this->email}' ,senha = '{$this->senha}' WHERE idUsuario = {$this->idUsuario}";
+            $sql = "UPDATE usuarios SET nome = '{$this->nome}', email = '{$this->email}' ,senha = '{$this->senha}' WHERE idUsuario = {$this->idUsuario}";
         }else{
-            $sql = "INSERT INTO usuarios (email,senha) VALUES ('{$this->email}','{$this->senha}')";
+            $sql = "INSERT INTO usuarios (nome,email,senha) VALUES ('{$this->nome}','{$this->email}','{$this->senha}')";
         }
         return $conexao->executa($sql);
     }
@@ -46,7 +54,7 @@ class Usuario implements ActiveRecord{
         $conexao = new MySQL();
         $sql = "SELECT * FROM usuarios WHERE idUsuario = {$idUsuario}";
         $resultado = $conexao->consulta($sql);
-        $u = new Usuario($resultado[0]['email'],$resultado[0]['senha']);
+        $u = new Usuario($resultado[0]['nome'], $resultado[0]['email'],$resultado[0]['senha']);
         $u->setIdUsuario($resultado[0]['idUsuario']);
         return $u;
     }
@@ -63,7 +71,7 @@ class Usuario implements ActiveRecord{
         $resultados = $conexao->consulta($sql);
         $usuarios = array();
         foreach($resultados as $resultado){
-            $u = new Usuario($resultado['email'],$resultado['senha']);
+            $u = new Usuario($resultado['nome'], $resultado['email'],$resultado['senha']);
             $u->setIdUsuario($resultado['idUsuario']);
             $usuarios[] = $u;
         }
