@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['botao'])){
     require_once __DIR__."/vendor/autoload.php";
-    $u = new Usuario($_POST['email'],$_POST['senha']);
+    $u = new Usuario($_POST['nome'],$_POST['email'],$_POST['senha']);
     if($u->authenticate()){
         header("location: restrita.php");
     }else{
