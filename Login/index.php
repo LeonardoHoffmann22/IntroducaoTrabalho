@@ -1,9 +1,10 @@
 <?php
 if(isset($_POST['botao'])){
-    require_once __DIR__."/vendor/autoload.php";
-    $u = new Usuario($_POST['nome'],$_POST['email'],$_POST['senha']);
+    require_once __DIR__."/src/models/Usuario.php";
+
+    $u = new Usuario($_POST['email'], $_POST['senha']);
     if($u->authenticate()){
-        header("location: restrita.php");
+        header("location: homepage.php");
     }else{
         header("location: index.php");
     }
@@ -22,7 +23,7 @@ if(isset($_POST['botao'])){
         <label for='email'>E-mail:</label>
         <input type='email' name='email' id='email' required>
         <label for='senha'>Senha:</label>
-        <input type='password' name='senha' id=senha' required>
+        <input type='password' name='senha' id='senha' required>
         <input type='submit' name='botao' value='Acessar'>
     </form>
     <a href='formCadUsuario.php'>Cadastrar usuario</a>

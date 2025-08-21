@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/Connection.php";
+require_once __DIR__ . "/ActiveRecord.php";
 
 class Usuario implements ActiveRecord{
 
@@ -41,7 +43,7 @@ class Usuario implements ActiveRecord{
     }
 
     public function save():bool{
-        $conexao = new MySQL();
+        $conexao = new Connection();
         $this->senha = password_hash($this->senha,PASSWORD_BCRYPT); 
         if(isset($this->idUsuario)){
             $sql = "UPDATE usuarios SET nome = '{$this->nome}', email = '{$this->email}' ,senha = '{$this->senha}' WHERE idUsuario = {$this->idUsuario}";
@@ -52,7 +54,7 @@ class Usuario implements ActiveRecord{
     }
 
     public static function find($idUsuario):Usuario{
-        $conexao = new MySQL();
+        $conexao = new Connection();
         $sql = "SELECT * FROM usuarios WHERE idUsuario = {$idUsuario}";
         $resultado = $conexao->consulta($sql);
         $u = new Usuario($resultado[0]['email'],$resultado[0]['senha']);
@@ -62,13 +64,13 @@ class Usuario implements ActiveRecord{
     }
 
     public function delete():bool{
-        $conexao = new MySQL();
+        $conexao = new Connection();
         $sql = "DELETE FROM usuarios WHERE idUsuario = {$this->idUsuario}";
         return $conexao->executa($sql);
     }
 
     public static function findall():array{
-        $conexao = new MySQL();
+        $conexao = new Connection();
         $sql = "SELECT * FROM usuarios";
         $resultados = $conexao->consulta($sql);
         $usuarios = array();
@@ -82,17 +84,37 @@ class Usuario implements ActiveRecord{
     }
 
     public function authenticate():bool{
-        $conexao = new MySQL();
+        $conexao = new Connection();
         $sql = "SELECT idUsuario,senha FROM usuarios WHERE email = '{$this->email}'";
         $resultados = $conexao->consulta($sql);
-        if(password_verify($this->senha,$resultados[0]['senha'])){
+        if(password_verify($this->senha, $resultados[0]['senha'])){
             session_start();
             $_SESSION['idUsuario'] = $resultados[0]['idUsuario'];
-            $_SESSION['email'] = $resultados[0]['email'];
+            $_SESSION['email'] = $this->email;
             $_SESSION['logado'] = true;
             return true;
         }else{
             return false;
         }
+    }
+
+    public function logout():void{
+        session_start();
+        session_destroy();
+        header("location: index.php");
+    }
+
+    public function findAllFavoritos(): array {
+        $conexao = new Connection();
+        $sql = "SELECT * FROM favoritos WHERE idUsuario = {$this->idUsuario}";
+        $resultados = $conexao->consulta($sql);
+        $favoritos = array();
+        foreach($resultados as $resultado){
+            $livro = Livro::find($resultado['idLivro']);
+            if($livro){
+                $favoritos[] = $livro;
+            }
+        }
+        return $favoritos;
     }
 }

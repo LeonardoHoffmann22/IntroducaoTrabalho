@@ -5,15 +5,20 @@ class Connection{
     private string $username = "root";
     private string $database = "biblioteca";
     private string $password = "";
+    private mysqli $connection;
 
     public function __construct(){
-        $conn = mysqli($servername, $username, $database, $password);
+        $conn = new mysqli($this->servername, $this->username, $this->password, $this->database);
 
         if ($conn->connect_error){
             die("Erro de conexão {$conn->connect_error}");
         }
 
-        return $conn;
+        $this->setConnection($conn);
+    }
+
+    public function setConnection(mysqli $connection): void {
+        $this->connection = $connection;
     }
 
     public function executa($sql){

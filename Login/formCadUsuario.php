@@ -1,7 +1,8 @@
 <?php
 if(isset($_POST['botao'])){
-    require_once __DIR__."/vendor/autoload.php";
+    require_once __DIR__."/src/models/Usuario.php";
     $u = new Usuario($_POST['email'],$_POST['senha']);
+    $u->setNome($_POST['nome']);
     $u->save();
     header("location: index.php");
 }
