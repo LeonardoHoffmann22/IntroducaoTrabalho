@@ -3,8 +3,9 @@
 class Usuario implements ActiveRecord{
 
     private int $idUsuario;
+    private string $nome;
     
-    public function __construct(private string $nome, private string $email,private string $senha){
+    public function __construct(private string $email, private string $senha){
     }
 
     public function setIdUsuario(int $idUsuario):void{
@@ -54,8 +55,9 @@ class Usuario implements ActiveRecord{
         $conexao = new MySQL();
         $sql = "SELECT * FROM usuarios WHERE idUsuario = {$idUsuario}";
         $resultado = $conexao->consulta($sql);
-        $u = new Usuario($resultado[0]['nome'], $resultado[0]['email'],$resultado[0]['senha']);
+        $u = new Usuario($resultado[0]['email'],$resultado[0]['senha']);
         $u->setIdUsuario($resultado[0]['idUsuario']);
+        $u->setNome($resultado[0]['nome']);
         return $u;
     }
 
@@ -71,8 +73,9 @@ class Usuario implements ActiveRecord{
         $resultados = $conexao->consulta($sql);
         $usuarios = array();
         foreach($resultados as $resultado){
-            $u = new Usuario($resultado['nome'], $resultado['email'],$resultado['senha']);
+            $u = new Usuario($resultado['email'],$resultado['senha']);
             $u->setIdUsuario($resultado['idUsuario']);
+            $u->setNome($resultado[0]['nome']);
             $usuarios[] = $u;
         }
         return $usuarios;
@@ -86,6 +89,7 @@ class Usuario implements ActiveRecord{
             session_start();
             $_SESSION['idUsuario'] = $resultados[0]['idUsuario'];
             $_SESSION['email'] = $resultados[0]['email'];
+            $_SESSION['logado'] = true;
             return true;
         }else{
             return false;
