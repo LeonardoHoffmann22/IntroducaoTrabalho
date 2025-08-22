@@ -18,13 +18,14 @@ if(!isset($_SESSION['logado']) || $_SESSION['logado'] !== true){
     <title>Homepage</title>
 </head>
 <body>
-    <div>
+    <div class='container'>
         <h1>Listagem de Livros</h1>
             <?php
             $livros = Livro::findAll();
             foreach ($livros as $livro) {
-                var_dump($livro->getImg);
-                echo "<div class='livro'><img src='{$livro->getImg()}' alt='{$livro->getTitulo()}'>
+                
+                echo "<div class='livro'>
+                <figure class='capa'><img src='resource/{$livro->getImg()}' alt='{$livro->getTitulo()}'></figure>
                 <h5>{$livro->getTitulo()}</h5>
                 <button onclick='{$livro->isFavorito($_SESSION['idUsuario'])} ? removeFavorito({$_SESSION['idUsuario']}) : addFavorito({$_SESSION['idUsuario']})'>
                     " . ($livro->isFavorito($_SESSION['idUsuario']) ? "Remover dos Favoritos" : "Adicionar aos Favoritos") . "
