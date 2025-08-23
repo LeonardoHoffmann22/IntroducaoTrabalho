@@ -85,23 +85,37 @@ class Livro implements ActiveRecord {
         return $livros;
     }
 
-    public function addFavorito(int $idUsuario): bool {
+    public static function addFavorito(int $idUsuario, int $idLivro): bool {
         $conexao = new Connection();
-        $sql = "INSERT INTO favoritos (idUsuario, id) VALUES ({$idUsuario}, {$this->id})";
+        $sql = "INSERT INTO favoritos (idUsuario, idLivro) VALUES ({$idUsuario}, {$idLivro})";
         return $conexao->executa($sql);
     }
 
-    public function removeFavorito(int $idUsuario): bool {
+    public static function removeFavorito(int $idUsuario, int $idLivro): bool {
         $conexao = new Connection();
-        $sql = "DELETE FROM favoritos WHERE idUsuario = {$idUsuario} AND idLivros = {$this->id}";
+        $sql = "DELETE FROM favoritos WHERE idUsuario = {$idUsuario} AND idLivro = {$idLivro}";
         return $conexao->executa($sql);
     }
 
     public function isFavorito(int $idUsuario): bool {
         $conexao = new Connection();
         $sql = "SELECT * FROM favoritos 
-        WHERE idUsuario = {$idUsuario} AND idLivros = {$this->id}";
+        WHERE idUsuario = {$idUsuario} AND idLivro = {$this->id}";
         $resultados = $conexao->consulta($sql);
         return count($resultados) > 0;
+    }
+
+    public static function findAllFavoritos($idUsuario): array {
+        $conexao = new Connection();
+        $sql = "SELECT * FROM favoritos WHERE idUsuario = {$idUsuario}";
+        $resultados = $conexao->consulta($sql);
+        $favoritos = array();
+        foreach($resultados as $resultado){
+            $livro = Livro::find($resultado['idLivro']);
+            if($livro){
+                $favoritos[] = $livro;
+            }
+        }
+        return $favoritos;
     }
 }

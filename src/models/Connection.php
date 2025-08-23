@@ -36,7 +36,3 @@ class Connection{
 		return $data;
 		}
 	}
-?>
-}
-
-?>

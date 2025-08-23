@@ -98,23 +98,4 @@ class Usuario implements ActiveRecord{
         }
     }
 
-    public function logout():void{
-        session_start();
-        session_destroy();
-        header("location: index.php");
-    }
-
-    public function findAllFavoritos(): array {
-        $conexao = new Connection();
-        $sql = "SELECT * FROM favoritos WHERE idUsuario = {$this->idUsuario}";
-        $resultados = $conexao->consulta($sql);
-        $favoritos = array();
-        foreach($resultados as $resultado){
-            $livro = Livro::find($resultado['idLivro']);
-            if($livro){
-                $favoritos[] = $livro;
-            }
-        }
-        return $favoritos;
-    }
 }
