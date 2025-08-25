@@ -40,7 +40,7 @@ if(!isset($_SESSION['logado']) || $_SESSION['logado'] !== true){
                     echo "<div class='livro'>
                     <figure class='capa'><img src='resource/{$livro->getImg()}' alt='{$livro->getTitulo()}'></figure>
                     <h5>{$livro->getTitulo()}</h5>
-                    <button class='btn-border-reveal' data-id='{$livro->getId()}'>".
+                    <button class='favoritar' data-id='{$livro->getId()}'>".
                     ($livro->isFavorito($_SESSION['idUsuario']) ? "Remover dos favoritos" : "Adicionar aos favoritos") .
                     "</button>
                     </div>";
