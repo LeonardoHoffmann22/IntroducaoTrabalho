@@ -36,6 +36,9 @@ if(!isset($_SESSION['logado']) || $_SESSION['logado'] !== true){
                 <?php
                 $livros = Livro::findAll();
                 foreach ($livros as $livro) {
+                    if($livro->isFavorito($_SESSION['idUsuario'])) {
+                        continue; // Pula livros já favoritados
+                    }
                     echo "<div class='livro'>
                     <figure class='capa'><img src='resource/{$livro->getImg()}' alt='{$livro->getTitulo()}'></figure>
                     <h5>{$livro->getTitulo()}</h5>

@@ -31,6 +31,7 @@ if(isset($_POST['botao'])){
             <label for='senha'>Senha:</label>
             <input type='password' name='senha' id="senha" required>
             <input type='submit' name='botao' value='Cadastrar'>
+            <a href="index.php">Já tenho usuário cadastrado!</a>
     </form>
     </div>
 </body>
