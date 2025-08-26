@@ -1,5 +1,4 @@
 <?php
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -20,7 +19,7 @@ if(!isset($_SESSION['logado']) || $_SESSION['logado'] !== true){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <script src='src/scripts/script.js' defer></script>
-    <link rel="stylesheet" href="src/styles/style.css">
+    <link rel="stylesheet" href="src/styles/home.css">
 </head>
 <body>
     <div class='container'>

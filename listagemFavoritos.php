@@ -23,6 +23,7 @@ $id_usuario = intval($_SESSION['idUsuario']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <script src='src/scripts/script.js' defer></script>
+    <link rel="stylesheet" href="src/styles/home.css">
 </head>
 <body>
     <div class='container'>
@@ -31,7 +32,11 @@ $id_usuario = intval($_SESSION['idUsuario']);
             <a href="listagemFavoritos.php">Favoritos</a>
             <a href="src/controllers/logout.php">Sair</a>
         </div>
-        <h1>Meus livros favoritos:</h1>
+        <div class='apresentacao'>
+            <div class='titulo'>
+                <h1>Meus livros favoritos:</h1>
+            </div>
+            <div class='listagem'>
             <?php
             $livros = Livro::findAllFavoritos($id_usuario);
             foreach ($livros as $livro) {
@@ -44,6 +49,8 @@ $id_usuario = intval($_SESSION['idUsuario']);
                 </div>";
             }
             ?>
+            </div>
+        </div>
     </div>
 </body>
 </html>
